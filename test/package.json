@@ -20,6 +20,7 @@
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.2",
     "bootstrap": "^5.3.3",
+    "chart.js": "^4.4.3",
     "cors": "^2.8.5",
     "emoji-mart": "^5.6.0",
     "emoji-picker-element": "^1.22.2",
@@ -33,6 +34,7 @@
     "scrollmagic": "^2.0.8",
     "sweetalert2": "^11.12.1",
     "vue": "^3.4.29",
+    "vue-chartjs": "^5.3.1",
     "vue-router": "^4.3.3",
     "vue3-emoji-picker": "^1.1.8",
     "vuex": "^4.1.0"
