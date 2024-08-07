@@ -1,5 +1,5 @@
 <template>
-  <div class="signup-page min-h-screen flex items-center justify-center">
+  <div class="signup-page min-h-screen flex items-center justify-center p-4 md:p-8 lg:p-12">
     <div class="w-full max-w-md p-5">
       <div class="bg-custom rounded-lg shadow-lg p-6 animate__animated animate__fadeInDown">
         <img
@@ -39,12 +39,7 @@
             <p v-if="isCapsLockOn" class="text-red-500 text-sm mt-2">Caps Lock is on</p>
           </div>
           <div class="mb-4">
-            <label
-              for="confirmPassword"
-              class="block text-gray-700 font-medium mb-2"
-            >
-              Confirm Password
-            </label>
+            <label for="confirmPassword" class="block text-gray-700 font-medium mb-2">Confirm Password</label>
             <input
               type="password"
               id="confirmPassword"

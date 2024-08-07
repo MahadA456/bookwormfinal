@@ -11,7 +11,7 @@
         <img
           src="@/assets/newlogo.jpg"
           alt="Logo"
-          class="w-24 h-24 rounded-full border-black border"
+          class="w-16 h-16 lg:w-24 lg:h-24 rounded-full border-black border"
         />
         <h2
           :class="[
@@ -22,23 +22,23 @@
           Book Worm Chat
         </h2>
       </div>
-      <div class="flex items-center">
+      <div class="flex items-center space-x-2">
         <select v-model="geminiOptions" class="btn transparent-btn">
           <option disabled value="">Please select one</option>
           <option value="text">Text</option>
           <option value="textImage">Text and Image</option>
           <option disabled>Chat (coming soon...)</option>
         </select>
-        <button @click="toggleDarkMode" class="btn transparent-btn ml-4">Toggle Dark Mode</button>
-        <button @click="goToDashboard" class="btn transparent-btn ml-4">Go to Dashboard</button>
-        <button @click="logout" class="btn transparent-btn ml-4">Logout</button>
+        <button @click="toggleDarkMode" class="btn transparent-btn ml-2">Toggle Dark Mode</button>
+        <button @click="goToDashboard" class="btn transparent-btn ml-2">Dashboard</button>
+        <button @click="logout" class="btn transparent-btn ml-2">Logout</button>
       </div>
     </header>
 
     <!-- Main Chat Section -->
     <main
       :class="[
-        'flex-1 w-full p-8 flex flex-col items-center bg-main-content',
+        'flex-1 w-full p-4 lg:p-8 flex flex-col items-center bg-main-content',
         { 'dark-mode-main': isDarkMode }
       ]"
     >
@@ -207,6 +207,7 @@ const logout = () => {
 @media (max-width: 640px) {
   .chat-container {
     flex-direction: column;
+    padding: 1rem;
   }
   .w-64 {
     width: 100%;

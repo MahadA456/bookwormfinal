@@ -1,9 +1,9 @@
 <template>
-  <div class="home-page min-h-screen flex flex-col justify-center items-center bg-main-content">
-    <h1 class="welcome-text text-5xl font-bold mb-8 animate-bounce-in">
+  <div class="home-page min-h-screen flex flex-col justify-center items-center bg-main-content p-4 md:p-8 lg:p-12">
+    <h1 class="welcome-text text-3xl md:text-5xl font-bold mb-8 animate-bounce-in">
       Welcome to <span class="highlight">Book Worm</span>
     </h1>
-    <div class="button-container flex space-x-4 animate-slide-in-up">
+    <div class="button-container flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 animate-slide-in-up">
       <router-link to="/login" :state="{ isAdmin: true }" class="btn btn-blue">
         <i class="fas fa-user-shield mr-2"></i> Login as Admin
       </router-link>
@@ -13,10 +13,6 @@
       <router-link to="/signup" class="btn btn-green">
         <i class="fas fa-user-plus mr-2"></i> Sign Up
       </router-link>
-    </div>
-    <div class="decorative-elements">
-      <div class="book-animation animate-book"></div>
-      <div class="worm-animation animate-worm"></div>
     </div>
   </div>
 </template>
@@ -35,6 +31,7 @@ export default {
   color: #fff;
   text-align: center;
   overflow: hidden; /* Prevent scrollbars caused by animations */
+  padding: 1rem; /* Ensure padding for small screens */
 }
 
 .welcome-text {
@@ -106,49 +103,6 @@ export default {
 }
 .btn-green:hover {
   background-color: #4cae4c;
-}
-
-.decorative-elements {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 100%;
-  height: 100%;
-  pointer-events: none; /* Ensure they don't block interactions */
-}
-
-.book-animation,
-.worm-animation {
-  position: absolute;
-  width: 100px;
-  height: 100px;
-  background-size: contain;
-  background-repeat: no-repeat;
-  opacity: 0.7;
-}
-
-.book-animation {
-  top: 20%;
-  left: 10%;
-  background-image: url('@/assets/bookworm.png'); /* Ensure you have a bookworm.png */
-  animation: float 6s ease-in-out infinite;
-}
-
-.worm-animation {
-  bottom: 20%;
-  right: 10%;
-  background-image: url('@/assets/bookworm.png'); /* Ensure you have a worm.png */
-  animation: float 8s ease-in-out infinite;
-}
-
-@keyframes float {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-20px);
-  }
 }
 
 @keyframes bounceIn {

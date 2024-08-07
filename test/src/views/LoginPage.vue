@@ -1,5 +1,5 @@
 <template>
-  <div class="login-page min-h-screen flex items-center justify-center">
+  <div class="login-page min-h-screen flex items-center justify-center p-4 md:p-8 lg:p-12">
     <div class="w-full max-w-md p-5">
       <div class="bg-custom rounded-lg shadow-lg p-6 animate__animated animate__fadeInDown">
         <img
@@ -50,9 +50,7 @@
           </button>
           <p class="mt-4 text-center text-gray-600">
             New to Bookworm?
-            <router-link to="/signup" class="text-login-link hover:underline"
-              >Register Here</router-link
-            >
+            <router-link to="/signup" class="text-login-link hover:underline">Register Here</router-link>
           </p>
         </form>
       </div>

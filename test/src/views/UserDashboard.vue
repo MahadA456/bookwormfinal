@@ -1,12 +1,12 @@
 <template>
-  <div :class="['user-dashboard min-h-screen flex', { 'dark-mode': isDarkMode }]">
+  <div :class="['user-dashboard min-h-screen flex flex-col lg:flex-row', { 'dark-mode': isDarkMode }]">
     <!-- Sidebar -->
-    <div :class="['w-64 shadow-lg p-6 sidebar-bg', { 'dark-mode-sidebar': isDarkMode }]">
+    <div :class="['w-full lg:w-64 shadow-lg p-6 sidebar-bg', { 'dark-mode-sidebar': isDarkMode }]">
       <div class="flex items-center justify-center mb-6">
         <img
           src="@/assets/newlogo.jpg"
           alt="Logo"
-          class="w-24 h-24 rounded-full border-black border"
+          class="w-16 h-16 lg:w-24 lg:h-24 rounded-full border-black border"
         />
       </div>
       <h2
@@ -35,32 +35,32 @@
       </h3>
       <ul>
         <li class="mb-2">
-          <button @click="showAllBooks" class="transparent-btn">All Books</button>
+          <button @click="showAllBooks" class="transparent-btn w-full">All Books</button>
         </li>
         <li v-for="genre in genres" :key="genre" class="mb-2">
-          <button @click="filterByGenre(genre)" class="transparent-btn">{{ genre }}</button>
+          <button @click="filterByGenre(genre)" class="transparent-btn w-full">{{ genre }}</button>
         </li>
         <li class="mb-2">
-          <button @click="showWishlist" class="transparent-btn">Wishlist</button>
+          <button @click="showWishlist" class="transparent-btn w-full">Wishlist</button>
         </li>
       </ul>
     </div>
 
     <!-- Main Content -->
-    <div :class="['flex-1 p-8 bg-main-content', { 'dark-mode-main': isDarkMode }]">
+    <div :class="['flex-1 p-4 lg:p-8 bg-main-content', { 'dark-mode-main': isDarkMode }]">
       <!-- Header -->
-      <div class="flex justify-between items-center mb-6">
-        <div>
+      <div class="flex flex-col lg:flex-row justify-between items-center mb-6">
+        <div class="mb-4 lg:mb-0">
           <button @click="navigateToChatBot" class="btn transparent-btn">BookWorm Chat Bot</button>
         </div>
-        <div class="w-full flex justify-center">
+        <div class="w-full lg:w-1/2 flex justify-center mb-4 lg:mb-0">
           <input
             type="text"
             v-model="searchQuery"
             @input="searchByAuthor"
             placeholder="Search by Author"
             :class="[
-              'w-1/2 px-4 py-2 border rounded-lg shadow-sm',
+              'w-full px-4 py-2 border rounded-lg shadow-sm',
               {
                 'border-gray-300': !isDarkMode,
                 'border-gray-600': isDarkMode,
@@ -78,7 +78,7 @@
 
       <!-- Books List -->
       <div v-if="!showingWishlist && filteredBooks.length > 0" class="flex justify-center">
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           <div
             v-for="book in filteredBooks"
             :key="book.id"
@@ -126,7 +126,7 @@
 
       <!-- Wishlist -->
       <div v-if="showingWishlist && wishlistBooks.length > 0" class="flex justify-center">
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           <div
             v-for="book in wishlistBooks"
             :key="book.id"
@@ -413,6 +413,22 @@ export default {
   }
   .btn {
     width: 100%;
+  }
+  .sidebar-bg {
+    padding: 2rem 1rem;
+  }
+  .tagline {
+    font-size: 1rem;
+  }
+  .w-24 {
+    width: 5rem;
+    height: 5rem;
+  }
+  h2 {
+    font-size: 1.5rem;
+  }
+  .transparent-btn {
+    padding: 0.75rem 1rem;
   }
 }
 
