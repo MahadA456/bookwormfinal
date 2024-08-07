@@ -1,5 +1,5 @@
 <template>
-  <div class="signup-page min-h-screen flex items-center justify-center p-4 md:p-8 lg:p-12">
+  <div :class="['signup-page min-h-screen flex items-center justify-center p-4 md:p-8 lg:p-12', { 'dark-mode': isDarkMode }]">
     <div class="w-full max-w-md p-5">
       <div class="bg-custom rounded-lg shadow-lg p-6 animate__animated animate__fadeInDown">
         <img
@@ -23,7 +23,7 @@
               id="email"
               v-model="email"
               required
-              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-200"
+              class="input-animated w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-200"
             />
           </div>
           <div class="mb-4">
@@ -33,10 +33,12 @@
               id="password"
               v-model="password"
               @keyup="checkCapsLock"
+              @input="checkPasswordStrength"
               required
-              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-200"
+              class="input-animated w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-200"
             />
             <p v-if="isCapsLockOn" class="text-red-500 text-sm mt-2">Caps Lock is on</p>
+            <p :class="passwordStrengthClass">{{ passwordStrengthMessage }}</p>
           </div>
           <div class="mb-4">
             <label for="confirmPassword" class="block text-gray-700 font-medium mb-2">Confirm Password</label>
@@ -46,7 +48,7 @@
               v-model="confirmPassword"
               @keyup="checkCapsLock"
               required
-              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-200"
+              class="input-animated w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-200"
             />
             <p v-if="isCapsLockOn" class="text-red-500 text-sm mt-2">Caps Lock is on</p>
           </div>
@@ -64,6 +66,9 @@
             </router-link>
           </p>
         </form>
+        <div v-if="isLoading" class="loading-overlay">
+          <div class="spinner"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -86,6 +91,10 @@ export default {
     const isCapsLockOn = ref(false)
     const errorMsg = ref('')
     const errorShow = ref(false)
+    const isLoading = ref(false)
+    const isDarkMode = ref(false)
+    const passwordStrengthMessage = ref('')
+    const passwordStrengthClass = ref('')
 
     const performSignup = async () => {
       if (password.value !== confirmPassword.value) {
@@ -95,10 +104,13 @@ export default {
       }
 
       try {
+        isLoading.value = true
         await store.dispatch('registerUser', { email: email.value, password: password.value })
+        isLoading.value = false
         Swal.fire('Success', 'Signup successful. Please login.', 'success')
         router.push('/login')
       } catch (error) {
+        isLoading.value = false
         errorMsg.value = error.message
         errorShow.value = true
         Swal.fire('Error', error.message, 'error')
@@ -109,6 +121,27 @@ export default {
       isCapsLockOn.value = event.getModifierState('CapsLock')
     }
 
+    const checkPasswordStrength = () => {
+      const strength = getPasswordStrength(password.value)
+      passwordStrengthMessage.value = strength.message
+      passwordStrengthClass.value = strength.class
+    }
+
+    const getPasswordStrength = (password) => {
+      let strength = { message: 'Weak', class: 'text-red-500' }
+      if (password.length >= 8) {
+        strength = { message: 'Medium', class: 'text-yellow-500' }
+      }
+      if (password.length >= 12 && /[A-Z]/.test(password) && /[0-9]/.test(password) && /[^A-Za-z0-9]/.test(password)) {
+        strength = { message: 'Strong', class: 'text-green-500' }
+      }
+      return strength
+    }
+
+    const toggleDarkMode = () => {
+      isDarkMode.value = !isDarkMode.value
+    }
+
     return {
       email,
       password,
@@ -116,8 +149,13 @@ export default {
       isCapsLockOn,
       errorMsg,
       errorShow,
+      isLoading,
       performSignup,
-      checkCapsLock
+      checkCapsLock,
+      passwordStrengthMessage,
+      passwordStrengthClass,
+      toggleDarkMode,
+      isDarkMode
     }
   }
 }
@@ -156,6 +194,46 @@ img {
   border: 2px solid black;
 }
 
+.input-animated {
+  transition: all 0.3s ease-in-out;
+}
+
+.input-animated:focus {
+  transform: scale(1.05);
+  border-color: #007bff;
+}
+
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.spinner {
+  border: 8px solid rgba(255, 255, 255, 0.3);
+  border-left-color: #ffffff;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 @media (max-width: 640px) {
   .signup-page {
     padding: 1rem;
@@ -176,5 +254,38 @@ img {
   button {
     padding: 0.75rem 1rem;
   }
+}
+
+/* Dark Mode Styles */
+.dark-mode {
+  background-color: #1a202c;
+  color: #cbd5e0;
+}
+
+.dark-mode .bg-custom {
+  background-color: #2d3748;
+  color: #e2e8f0;
+}
+
+.dark-mode input {
+  background-color: #2d3748;
+  border-color: #4a5568;
+  color: #e2e8f0;
+}
+
+.dark-mode input:focus {
+  border-color: #63b3ed;
+}
+
+.dark-mode .text-signup-link {
+  color: #63b3ed;
+}
+
+.dark-mode .bg-signup-button {
+  background-color: #2d3748;
+}
+
+.dark-mode .bg-signup-button-hover {
+  background-color: #4a5568;
 }
 </style>
