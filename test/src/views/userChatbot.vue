@@ -1,5 +1,5 @@
 <template>
-  <div :class="['chat-container', 'min-h-screen flex flex-col', { 'dark-mode': isDarkMode }]">
+  <div :class="['chat-container min-h-screen flex flex-col', { 'dark-mode': isDarkMode }]">
     <!-- Header -->
     <header
       :class="[
@@ -46,100 +46,153 @@
         <div v-for="(message, index) in messages" :key="index" :class="['message', message.type]">
           <p>{{ message.text }}</p>
         </div>
+        <div v-if="isTyping" class="typing-indicator">Typing...</div>
       </div>
-      <div class="input-box w-full lg:w-3/4 flex mt-4">
+      <div class="input-box w-full lg:w-3/4 flex mt-4 relative">
         <input
           v-model="userMessage"
+          @input="onInput"
           @keyup.enter="sendMessage"
           placeholder="Type a message..."
           class="flex-1 px-4 py-2 border rounded-lg shadow-sm"
         />
         <button @click="sendMessage" class="btn btn-blue ml-2">Send</button>
+        <button @click="toggleEmojiPicker" class="btn btn-blue ml-2">😊</button>
+        <div v-show="showEmojiPicker" class="emoji-picker-wrapper">
+          <emoji-picker @emoji-click="addEmoji"></emoji-picker>
+        </div>
       </div>
     </main>
   </div>
 </template>
 
-<script setup>
+<script>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { GoogleGenerativeAI } from '@google/generative-ai'
+import store from '../store'
+import 'emoji-picker-element' // Import the emoji picker element
 
 const API_KEY = 'AIzaSyBnNGVDrqqfNoXbDz4lmOMytqMYoedcTSc' // Replace with your actual API key
 const genAI = new GoogleGenerativeAI(API_KEY)
 
-const geminiOptions = ref('text')
-const userMessage = ref('')
-const messages = ref([])
-const isDarkMode = ref(false)
-const router = useRouter()
+export default {
+  name: 'UserChatbot',
+  setup() {
+    const router = useRouter()
+    const geminiOptions = ref('text')
+    const userMessage = ref('')
+    const messages = ref([])
+    const isDarkMode = ref(false)
+    const isTyping = ref(false)
+    const showEmojiPicker = ref(false)
 
-const sendMessage = async () => {
-  if (userMessage.value.trim() === '') return
+    const sendMessage = async () => {
+      if (userMessage.value.trim() === '') return
 
-  const timestamp = new Date().toLocaleString()
-  messages.value.push({ type: 'user', text: userMessage.value, timestamp })
+      const timestamp = new Date().toLocaleString()
+      messages.value.push({ type: 'user', text: userMessage.value, timestamp })
+      isTyping.value = true
 
-  const model = genAI.getGenerativeModel({
-    model: 'gemini-1.5-pro',
-    systemInstruction: `
-      Welcome to Book Worm! How can I assist you today? Here are some things I can help you with:
-      View and Filter Books:
-      "Show me all books."
-      "Filter books by genre [Fiction, Non-fiction, Science Fiction, Fantasy, Mystery, Biography]."
-      "Show books by the author [author name]."
-      Book Details:
-      "Show details for [book title]."
-      "What are the books written by [author name]?"
-      User Actions:
-      "Add a new book." (Follow-up questions: title, author, year, genre, book URL, and cover image)
-      "Edit details of [book title]."
-      "Delete the book [book title]."
-      Account Management:
-      "Log out."
-      "Toggle dark mode."
-      Examples:
-      "Show me all books in the Fiction genre."
-      "What are the details for 'In the Line of Fire'?"
-      "Add a new book to the collection."
-      "Filter books by the author 'Lewis Carroll'."
-      Feel free to ask me anything related to managing your book collection or using the Book Worm dashboard!
-    `
-  })
+      const model = genAI.getGenerativeModel({
+        model: 'gemini-1.5-pro',
+        systemInstruction: `
+          Welcome to Book Worm! How can I assist you today? Here are some things I can help you with:
+          View and Filter Books:
+          "Show me all books."
+          "Filter books by genre [Fiction, Non-fiction, Science Fiction, Fantasy, Mystery, Biography]."
+          "Show books by the author [author name]."
+          Book Details:
+          "Show details for [book title]."
+          "What are the books written by [author name]?"
+          User Actions:
+          "Add a new book." (Follow-up questions: title, author, year, genre, book URL, and cover image)
+          "Edit details of [book title]."
+          "Delete the book [book title]."
+          Account Management:
+          "Log out."
+          "Toggle dark mode."
+          Examples:
+          "Show me all books in the Fiction genre."
+          "What are the details for 'In the Line of Fire'?"
+          "Add a new book to the collection."
+          "Filter books by the author 'Lewis Carroll'."
+          Feel free to ask me anything related to managing your book collection or using the Book Worm dashboard!
+        `
+      })
 
-  const chatSession = model.startChat({
-    generationConfig: {
-      temperature: 1,
-      topP: 0.95,
-      topK: 64,
-      maxOutputTokens: 8192,
-      responseMimeType: 'text/plain'
-    },
-    history: messages.value.map((msg) => ({
-      role: msg.type === 'user' ? 'user' : 'model',
-      parts: [{ text: msg.text }]
-    }))
-  })
+      const chatSession = model.startChat({
+        generationConfig: {
+          temperature: 1,
+          topP: 0.95,
+          topK: 64,
+          maxOutputTokens: 8192,
+          responseMimeType: 'text/plain'
+        },
+        history: messages.value.map((msg) => ({
+          role: msg.type === 'user' ? 'user' : 'model',
+          parts: [{ text: msg.text }]
+        }))
+      })
 
-  const result = await chatSession.sendMessage(userMessage.value)
-  const response = await result.response
-  const text = await response.text()
+      const result = await chatSession.sendMessage(userMessage.value)
+      const response = await result.response
+      const text = await response.text()
 
-  messages.value.push({ type: 'model', text, timestamp: new Date().toLocaleString() })
+      messages.value.push({ type: 'model', text, timestamp: new Date().toLocaleString() })
 
-  userMessage.value = ''
-}
+      userMessage.value = ''
+      isTyping.value = false
+    }
 
-const toggleDarkMode = () => {
-  isDarkMode.value = !isDarkMode.value
-}
+    const onInput = () => {
+      isTyping.value = true
+      clearTimeout(typingTimeout)
+      typingTimeout = setTimeout(() => {
+        isTyping.value = false
+      }, 1000) // Stops showing "typing" after 1 second of inactivity
+    }
 
-const goToDashboard = () => {
-  router.push('/userdashboard')
-}
+    const addEmoji = (event) => {
+      userMessage.value += event.detail.unicode
+    }
 
-const logout = () => {
-  router.push('/login')
+    const toggleEmojiPicker = () => {
+      showEmojiPicker.value = !showEmojiPicker.value
+    }
+
+    const toggleDarkMode = () => {
+      isDarkMode.value = !isDarkMode.value
+    }
+
+    const goToDashboard = () => {
+      router.push('/userdashboard')
+    }
+
+    const logout = () => {
+      store.dispatch('logout').then(() => {
+        router.push('/login')
+      })
+    }
+
+    let typingTimeout
+
+    return {
+      geminiOptions,
+      userMessage,
+      messages,
+      isDarkMode,
+      isTyping,
+      sendMessage,
+      onInput,
+      addEmoji,
+      toggleDarkMode,
+      goToDashboard,
+      logout,
+      showEmojiPicker,
+      toggleEmojiPicker
+    }
+  }
 }
 </script>
 
@@ -275,6 +328,7 @@ const logout = () => {
   justify-content: center;
   background-color: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(5px);
+  position: relative;
 }
 
 input {
@@ -296,5 +350,20 @@ button {
 
 button:hover {
   background-color: #0056b3;
+}
+
+.typing-indicator {
+  color: #999;
+  font-style: italic;
+  text-align: left;
+  padding-left: 10px;
+}
+
+.emoji-picker-wrapper {
+  position: absolute;
+  bottom: 50px;
+  left: 0;
+  right: 0;
+  z-index: 1000;
 }
 </style>

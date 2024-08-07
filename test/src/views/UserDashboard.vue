@@ -69,11 +69,31 @@
               }
             ]"
           />
+          <ul v-if="suggestions.length" class="absolute bg-white shadow-lg rounded-lg w-full mt-2 z-10">
+            <li
+              v-for="(suggestion, index) in suggestions"
+              :key="index"
+              @click="selectSuggestion(suggestion)"
+              class="px-4 py-2 cursor-pointer hover:bg-gray-200"
+            >
+              {{ suggestion }}
+            </li>
+          </ul>
         </div>
         <div class="flex items-center space-x-2">
           <button @click="toggleDarkMode" class="btn transparent-btn">Toggle Dark Mode</button>
           <button @click="logout" class="btn transparent-btn">Logout</button>
         </div>
+      </div>
+
+      <!-- Sorting Options -->
+      <div class="flex justify-end mb-6">
+        <label for="sort" class="mr-2">Sort by:</label>
+        <select v-model="sortOption" @change="sortBooks" id="sort" class="px-4 py-2 border rounded-lg shadow-sm">
+          <option value="title">Title</option>
+          <option value="author">Author</option>
+          <option value="year">Year</option>
+        </select>
       </div>
 
       <!-- Books List -->
@@ -196,7 +216,7 @@
 </template>
 
 <script>
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import Swal from 'sweetalert2'
@@ -208,10 +228,12 @@ export default {
     const store = useStore()
 
     const searchQuery = ref('')
+    const suggestions = ref([])
     const showImageModalFlag = ref(false)
     const currentImage = ref('')
     const isDarkMode = ref(false)
     const showingWishlist = ref(false)
+    const sortOption = ref('title')
 
     // Fetch books on startup
     store.dispatch('fetchBooks')
@@ -224,6 +246,17 @@ export default {
     const wishlistBooks = computed(() =>
       books.value.filter((book) => wishlist.value.includes(book.id))
     )
+
+    watch(searchQuery, (newQuery) => {
+      if (newQuery.length > 1) {
+        suggestions.value = books.value
+          .filter((book) => book.author.toLowerCase().includes(newQuery.toLowerCase()))
+          .map((book) => book.author)
+          .filter((author, index, self) => self.indexOf(author) === index)
+      } else {
+        suggestions.value = []
+      }
+    })
 
     const filterByGenre = (genre) => {
       showingWishlist.value = false
@@ -241,6 +274,12 @@ export default {
       if (filteredBooks.value.length === 0 && searchQuery.value.trim() !== '') {
         Swal.fire('No Books Found', 'Sorry, no books were found for the entered author.', 'info')
       }
+    }
+
+    const selectSuggestion = (suggestion) => {
+      searchQuery.value = suggestion
+      suggestions.value = []
+      searchByAuthor()
     }
 
     const showAllBooks = () => {
@@ -306,12 +345,24 @@ export default {
       router.push('/chatBot')
     }
 
+    const sortBooks = () => {
+      filteredBooks.value.sort((a, b) => {
+        if (sortOption.value === 'year') {
+          return a.year - b.year
+        } else {
+          return a[sortOption.value].localeCompare(b[sortOption.value])
+        }
+      })
+    }
+
     return {
       genres,
       searchQuery,
+      suggestions,
       filteredBooks,
       filterByGenre,
       searchByAuthor,
+      selectSuggestion,
       showAllBooks,
       addToWishlist,
       confirmRemoveFromWishlist,
@@ -326,7 +377,9 @@ export default {
       navigateToChatBot,
       showWishlist,
       showingWishlist,
-      wishlistBooks
+      wishlistBooks,
+      sortOption,
+      sortBooks
     }
   }
 }

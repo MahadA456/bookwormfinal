@@ -5,7 +5,8 @@ import store from './store'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap'
 import './assets/main.css'
-import 'sweetalert2/dist/sweetalert2.min.css' // Import SweetAlert2 CSS
+import 'sweetalert2/dist/sweetalert2.min.css' 
+import 'emoji-picker-element' 
 
 import { initializeApp } from 'firebase/app'
 import { getAuth } from 'firebase/auth'

@@ -3,8 +3,8 @@ import HomePage from '../views/HomePage.vue'
 import LoginPage from '../views/LoginPage.vue'
 import SignupPage from '../views/SignupPage.vue'
 import AdminDashboard from '../views/AdminDashboard.vue'
-import UserDashboard from '../views/UserDashboard.vue' // Import UserDashboard
-import ChatBot from '../views/userChatbot.vue' // Import ChatBot
+import UserDashboard from '../views/UserDashboard.vue'
+import ChatBot from '../views/userChatbot.vue'
 import store from '../store' // Import Vuex store for checking authentication
 
 const routes = [
@@ -58,13 +58,13 @@ router.beforeEach((to, from, next) => {
   if (to.matched.some((record) => record.meta.requiresAuth)) {
     if (!isAuthenticated) {
       next({ name: 'Login' })
-    } else if (to.matched.some((record) => record.meta.isAdmin) && !currentUser.isAdmin) {
+    } else if (to.matched.some((record) => record.meta.isAdmin) && !currentUser?.isAdmin) {
       next({ name: 'UserDashboard' })
     } else {
       next()
     }
   } else if (to.matched.some((record) => record.meta.requiresUnauth) && isAuthenticated) {
-    next({ name: currentUser.isAdmin ? 'AdminDashboard' : 'UserDashboard' })
+    next({ name: currentUser?.isAdmin ? 'AdminDashboard' : 'UserDashboard' })
   } else {
     next()
   }

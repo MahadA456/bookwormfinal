@@ -33,7 +33,8 @@ export default createStore({
       'Other'
     ],
     messages: [], // Store for chat messages
-    wishlist: [] // Store for wishlist items
+    wishlist: [], // Store for wishlist items
+    isDarkMode: false // Dark mode state
   },
   mutations: {
     setUser(state, user) {
@@ -65,6 +66,9 @@ export default createStore({
     },
     removeFromWishlist(state, bookId) {
       state.wishlist = state.wishlist.filter((id) => id !== bookId)
+    },
+    toggleDarkMode(state) {
+      state.isDarkMode = !state.isDarkMode
     }
   },
   actions: {
@@ -211,6 +215,9 @@ export default createStore({
     },
     wishlist(state) {
       return state.wishlist
+    },
+    isDarkMode(state) {
+      return state.isDarkMode
     }
   }
 })
