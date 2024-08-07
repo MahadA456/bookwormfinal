@@ -167,6 +167,7 @@ export default {
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
+  color: #fff; /* Ensure text is visible on dark backgrounds */
 }
 
 .bg-custom {

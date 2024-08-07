@@ -149,10 +149,14 @@ export default {
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .bg-custom {
   background-color: #f2f1eb;
+  padding: 1.5rem;
 }
 
 .bg-signup-button {
@@ -169,7 +173,7 @@ export default {
 
 .tagline {
   font-family: 'Dancing Script', cursive;
-  font-size: 1.25rem;
+  font-size: 1.5rem;
 }
 
 img {
@@ -216,12 +220,37 @@ img {
   }
 }
 
+@media (max-width: 1024px) {
+  .login-page {
+    padding: 2rem;
+  }
+  .bg-custom {
+    padding: 2rem;
+  }
+  .tagline {
+    font-size: 1.25rem;
+  }
+  .w-24 {
+    width: 6rem;
+    height: 6rem;
+  }
+  h1 {
+    font-size: 1.75rem;
+  }
+  button {
+    padding: 1rem 1.5rem;
+  }
+}
+
 @media (max-width: 640px) {
   .login-page {
     padding: 1rem;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
   }
   .bg-custom {
-    padding: 2rem 1rem;
+    padding: 1rem;
   }
   .tagline {
     font-size: 1rem;
@@ -234,7 +263,10 @@ img {
     font-size: 1.5rem;
   }
   button {
-    padding: 0.75rem 1rem;
+    padding: 0.75rem 1.25rem;
+  }
+  .input-animated {
+    font-size: 0.875rem;
   }
 }
 

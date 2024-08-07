@@ -3,11 +3,11 @@
     <!-- Header -->
     <header
       :class="[
-        'w-full shadow-lg p-6 flex justify-between items-center sidebar-bg',
+        'w-full shadow-lg p-4 flex flex-col lg:flex-row justify-between items-center sidebar-bg',
         { 'dark-mode-sidebar': isDarkMode }
       ]"
     >
-      <div class="flex items-center">
+      <div class="flex items-center mb-4 lg:mb-0">
         <img
           src="@/assets/newlogo.jpg"
           alt="Logo"
@@ -22,23 +22,23 @@
           Book Worm Chat
         </h2>
       </div>
-      <div class="flex items-center space-x-2">
-        <select v-model="geminiOptions" class="btn transparent-btn">
+      <div class="flex flex-wrap justify-center lg:justify-end space-x-2">
+        <select v-model="geminiOptions" class="btn transparent-btn mb-2 lg:mb-0">
           <option disabled value="">Please select one</option>
           <option value="text">Text</option>
           <option value="textImage">Text and Image</option>
           <option disabled>Chat (coming soon...)</option>
         </select>
-        <button @click="toggleDarkMode" class="btn transparent-btn ml-2">Toggle Dark Mode</button>
-        <button @click="goToDashboard" class="btn transparent-btn ml-2">Dashboard</button>
-        <button @click="logout" class="btn transparent-btn ml-2">Logout</button>
+        <button @click="toggleDarkMode" class="btn transparent-btn mb-2 lg:mb-0">Toggle Dark Mode</button>
+        <button @click="goToDashboard" class="btn transparent-btn mb-2 lg:mb-0">Dashboard</button>
+        <button @click="logout" class="btn transparent-btn mb-2 lg:mb-0">Logout</button>
       </div>
     </header>
 
     <!-- Main Chat Section -->
     <main
       :class="[
-        'flex-1 w-full p-4 lg:p-8 flex flex-col items-center bg-main-content',
+        'flex-1 w-full p-4 lg:p-6 flex flex-col items-center bg-main-content',
         { 'dark-mode-main': isDarkMode }
       ]"
     >
@@ -203,6 +203,8 @@ export default {
   background-position: center;
   width: 100%;
   height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .sidebar-bg {
@@ -257,16 +259,36 @@ export default {
   color: white;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 1024px) {
   .chat-container {
-    flex-direction: column;
     padding: 1rem;
   }
-  .w-64 {
+  .chat-box {
+    max-height: 300px;
+  }
+  .input-box {
+    flex-direction: column;
+  }
+  input {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  button {
     width: 100%;
   }
-  .flex-1 {
-    width: 100%;
+}
+
+@media (max-width: 640px) {
+  .chat-container {
+    padding: 0.5rem;
+  }
+  .w-16 {
+    width: 60px;
+    height: 60px;
+  }
+  .w-24 {
+    width: 80px;
+    height: 80px;
   }
   .btn {
     width: 100%;
@@ -286,6 +308,15 @@ export default {
 .dark-mode-sidebar {
   background: linear-gradient(135deg, #2d3748, #1a202c);
   color: #cbd5e0;
+}
+
+.dark-mode .message.model {
+  background-color: #2d3748; /* Dark background for messages */
+  color: #e2e8f0; /* Light text color for better contrast */
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3); /* Optional: add shadow for better readability */
 }
 
 @keyframes gradientAnimation {

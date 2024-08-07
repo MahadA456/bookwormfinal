@@ -1,16 +1,16 @@
 <template>
-  <div :class="['admin-dashboard', 'min-h-screen flex flex-col lg:flex-row', { 'dark-mode': isDarkMode }]">
+  <div :class="['admin-dashboard', 'min-h-screen flex', { 'dark-mode': isDarkMode }]">
     <!-- Sidebar -->
-    <div :class="['w-full lg:w-64 shadow-lg p-6 sidebar-bg', { hidden: !sidebarOpen }]">
+    <div :class="['w-64 shadow-lg p-6 sidebar-bg', { hidden: !sidebarOpen }]">
       <div class="flex items-center justify-center mb-6">
         <img
           src="@/assets/newlogo.jpg"
           alt="Logo"
-          class="w-16 h-16 lg:w-24 lg:h-24 rounded-full border-black border animate-fade-in"
+          class="w-24 h-24 rounded-full border-black border animate-fade-in"
         />
       </div>
       <div class="flex items-center space-x-4 animate-slide-in">
-        <img src="@/assets/linkedinavatar.jpg" alt="User Avatar" class="w-10 h-10 lg:w-12 lg:h-12 rounded-full" />
+        <img src="@/assets/linkedinavatar.jpg" alt="User Avatar" class="w-12 h-12 rounded-full" />
         <div>
           <h2 class="text-lg font-semibold text-white">Book Worm Administration</h2>
           <p class="text-sm text-gray-200">Admin</p>
@@ -32,16 +32,16 @@
     </div>
 
     <!-- Main Content -->
-    <div class="flex-1 p-4 lg:p-8 bg-main-content animate-fade-in-up">
+    <div class="flex-1 p-8 bg-main-content animate-fade-in-up">
       <!-- Header -->
-      <div class="flex flex-col lg:flex-row justify-between items-center mb-6">
-        <div class="mb-4 lg:mb-0">
+      <div class="flex justify-between items-center mb-6">
+        <div>
           <button @click="sidebarOpen = !sidebarOpen" class="btn btn-gray">☰</button>
         </div>
         <h1 :class="['book-details-title', { 'dark-mode-title': isDarkMode }]">Book Details</h1>
-        <div class="flex space-x-2">
+        <div>
           <button @click="toggleDarkMode" class="btn transparent-btn">Toggle Dark Mode</button>
-          <button @click="logout" class="btn transparent-btn">Logout</button>
+          <button @click="logout" class="btn transparent-btn ml-2">Logout</button>
         </div>
       </div>
 
@@ -59,42 +59,42 @@
           <thead :class="[{ 'bg-gray-50': !isDarkMode, 'bg-gray-700': isDarkMode }]">
             <tr>
               <th
-                class="px-2 py-3 lg:px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
               >
                 #
               </th>
               <th
-                class="px-2 py-3 lg:px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
               >
                 Cover
               </th>
               <th
-                class="px-2 py-3 lg:px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
               >
                 Book Title
               </th>
               <th
-                class="px-2 py-3 lg:px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
               >
                 Year
               </th>
               <th
-                class="px-2 py-3 lg:px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
               >
                 Author
               </th>
               <th
-                class="px-2 py-3 lg:px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
               >
                 Genre
               </th>
               <th
-                class="px-2 py-3 lg:px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
               >
                 Book URL
               </th>
               <th
-                class="px-2 py-3 lg:px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
               >
                 Actions
               </th>
@@ -111,8 +111,8 @@
             ]"
           >
             <tr v-for="(book, index) in filteredBooks" :key="book.id" class="animate-fade-in-up">
-              <td class="px-2 py-4 lg:px-6 whitespace-nowrap">{{ index + 1 }}</td>
-              <td class="px-2 py-4 lg:px-6 whitespace-nowrap">
+              <td class="px-6 py-4 whitespace-nowrap">{{ index + 1 }}</td>
+              <td class="px-6 py-4 whitespace-nowrap">
                 <img
                   :src="book.imgURL"
                   alt="Book Image"
@@ -122,7 +122,7 @@
               </td>
               <td
                 :class="[
-                  'px-2 py-4 lg:px-6 whitespace-nowrap',
+                  'px-6 py-4 whitespace-nowrap',
                   { 'dark-mode-text': isDarkMode, 'text-black': !isDarkMode }
                 ]"
               >
@@ -130,7 +130,7 @@
               </td>
               <td
                 :class="[
-                  'px-2 py-4 lg:px-6 whitespace-nowrap',
+                  'px-6 py-4 whitespace-nowrap',
                   { 'dark-mode-text': isDarkMode, 'text-black': !isDarkMode }
                 ]"
               >
@@ -138,7 +138,7 @@
               </td>
               <td
                 :class="[
-                  'px-2 py-4 lg:px-6 whitespace-nowrap',
+                  'px-6 py-4 whitespace-nowrap',
                   { 'dark-mode-text': isDarkMode, 'text-black': !isDarkMode }
                 ]"
               >
@@ -146,7 +146,7 @@
               </td>
               <td
                 :class="[
-                  'px-2 py-4 lg:px-6 whitespace-nowrap',
+                  'px-6 py-4 whitespace-nowrap',
                   { 'dark-mode-text': isDarkMode, 'text-black': !isDarkMode }
                 ]"
               >
@@ -154,7 +154,7 @@
               </td>
               <td
                 :class="[
-                  'px-2 py-4 lg:px-6 whitespace-nowrap',
+                  'px-6 py-4 whitespace-nowrap',
                   { 'dark-mode-text': isDarkMode, 'text-black': !isDarkMode }
                 ]"
               >
@@ -162,7 +162,7 @@
                   book.bookURL
                 }}</a>
               </td>
-              <td class="px-2 py-4 lg:px-6 whitespace-nowrap actions">
+              <td class="px-6 py-4 whitespace-nowrap actions">
                 <button @click="editBook(book)" class="btn btn-blue">Edit</button>
                 <button @click="deleteBook(book.id)" class="btn btn-red ml-2">Delete</button>
               </td>

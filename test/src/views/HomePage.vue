@@ -30,14 +30,14 @@ export default {
   background-position: center;
   color: #fff;
   text-align: center;
-  overflow: hidden; /* Prevent scrollbars caused by animations */
-  padding: 1rem; /* Ensure padding for small screens */
+  overflow: hidden;
+  padding: 1rem;
 }
 
 .welcome-text {
   font-family: 'Dancing Script', cursive;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Darker shadow for better contrast */
-  color: white; /* Change text color to white for better visibility */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+  color: white;
 }
 
 .highlight {
@@ -47,24 +47,10 @@ export default {
 
 @keyframes text-glow {
   from {
-    text-shadow:
-      0 0 10px #ffd700,
-      0 0 20px #ffd700,
-      0 0 30px #ffd700,
-      0 0 40px #ffd700,
-      0 0 50px #ffd700,
-      0 0 60px #ffd700,
-      0 0 70px #ffd700;
+    text-shadow: 0 0 10px #ffd700, 0 0 20px #ffd700, 0 0 30px #ffd700, 0 0 40px #ffd700, 0 0 50px #ffd700, 0 0 60px #ffd700, 0 0 70px #ffd700;
   }
   to {
-    text-shadow:
-      0 0 20px #ffd700,
-      0 0 30px #ffd700,
-      0 0 40px #ffd700,
-      0 0 50px #ffd700,
-      0 0 60px #ffd700,
-      0 0 70px #ffd700,
-      0 0 80px #ffd700;
+    text-shadow: 0 0 20px #ffd700, 0 0 30px #ffd700, 0 0 40px #ffd700, 0 0 50px #ffd700, 0 0 60px #ffd700, 0 0 70px #ffd700, 0 0 80px #ffd700;
   }
 }
 
@@ -73,9 +59,7 @@ export default {
   border-radius: 0.375rem;
   text-align: center;
   width: auto;
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
   display: flex;
   align-items: center;
 }
@@ -139,5 +123,31 @@ export default {
 
 .animate-slide-in-up {
   animation: slideInUp 1s ease-in-out;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .welcome-text {
+    font-size: 2.5rem;
+  }
+  .btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .welcome-text {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+  }
+  .button-container {
+    flex-direction: column;
+    align-items: center;
+  }
+  .btn {
+    width: 100%;
+    margin-bottom: 1rem;
+  }
 }
 </style>

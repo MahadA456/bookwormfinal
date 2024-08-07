@@ -454,7 +454,22 @@ export default {
   color: #b52b27;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 1024px) { /* Tablet devices */
+  .user-dashboard {
+    flex-direction: column;
+  }
+  .sidebar-bg {
+    width: 100%;
+  }
+  .flex-1 {
+    width: 100%;
+  }
+  .btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) { /* Small tablets and large mobile devices */
   .user-dashboard {
     flex-direction: column;
   }
@@ -462,9 +477,6 @@ export default {
     width: 100%;
   }
   .flex-1 {
-    width: 100%;
-  }
-  .btn {
     width: 100%;
   }
   .sidebar-bg {
@@ -482,6 +494,25 @@ export default {
   }
   .transparent-btn {
     padding: 0.75rem 1rem;
+  }
+}
+
+@media (max-width: 640px) { /* Mobile devices */
+  .user-dashboard {
+    flex-direction: column;
+  }
+  .sidebar-bg {
+    padding: 1rem;
+  }
+  .tagline {
+    font-size: 0.875rem;
+  }
+  .btn {
+    font-size: 14px;
+  }
+  .w-24 {
+    width: 4rem;
+    height: 4rem;
   }
 }
 
