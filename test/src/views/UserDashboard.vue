@@ -49,7 +49,7 @@
             <p v-if="book.bookURL" :class="['text-gray-600', { 'text-gray-400': isDarkMode }]">
               <a :href="book.bookURL" target="_blank" class="underline text-blue-600 dark:text-blue-400">Read More</a>
             </p>
-            <button @click="addToWishlist(book)" class="heart-button" :class="{ 'active': isBookInWishlist(book.id) }">
+            <button @click="addToWishlist(book.id)" class="heart-button" :class="{ 'active': isBookInWishlist(book.id) }">
               ♥
             </button>
           </div>
@@ -57,9 +57,9 @@
       </div>
 
       <!-- Wishlist -->
-      <div v-if="showingWishlist && wishlist.length > 0" class="flex justify-center">
+      <div v-if="showingWishlist && wishlistBooks.length > 0" class="flex justify-center">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div v-for="book in wishlist" :key="book.id" :class="['bg-white p-4 rounded-lg shadow-lg', { 'dark-mode-book': isDarkMode }]">
+          <div v-for="book in wishlistBooks" :key="book.id" :class="['bg-white p-4 rounded-lg shadow-lg', { 'dark-mode-book': isDarkMode }]">
             <img :src="book.imgURL" alt="Book Image" class="h-32 w-full object-cover mb-4 rounded-lg cursor-pointer" @click="showImageModal(book.imgURL)">
             <h3 :class="['text-lg font-semibold', { 'text-gray-800': !isDarkMode, 'text-gray-200': isDarkMode }]">{{ book.title }}</h3>
             <p :class="['text-gray-600', { 'text-gray-400': isDarkMode }]">Author: {{ book.author }}</p>
@@ -112,6 +112,7 @@ export default {
     const genres = computed(() => [...new Set(books.value.map((book) => book.genre))]);
     const filteredBooks = ref([...books.value]);
     const wishlist = computed(() => store.getters.wishlist);
+    const wishlistBooks = computed(() => books.value.filter(book => wishlist.value.includes(book.id)));
 
     const filterByGenre = (genre) => {
       showingWishlist.value = false;
@@ -134,8 +135,8 @@ export default {
       filteredBooks.value = [...books.value];
     };
 
-    const addToWishlist = (book) => {
-      store.dispatch('addToWishlist', book);
+    const addToWishlist = (bookId) => {
+      store.dispatch('addToWishlist', bookId);
       Swal.fire('Added', 'Book added to your wishlist!', 'success');
     };
 
@@ -162,10 +163,11 @@ export default {
 
     const showWishlist = () => {
       showingWishlist.value = true;
+      filteredBooks.value = wishlistBooks.value;
     };
 
     const isBookInWishlist = (bookId) => {
-      return wishlist.value.some(book => book.id === bookId);
+      return wishlist.value.includes(bookId);
     };
 
     const showImageModal = (imageUrl) => {
@@ -211,7 +213,7 @@ export default {
       navigateToChatBot,
       showWishlist,
       showingWishlist,
-      wishlist
+      wishlistBooks
     };
   }
 };

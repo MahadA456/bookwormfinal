@@ -43,11 +43,11 @@ export default createStore({
     setWishlist(state, wishlist) {
       state.wishlist = wishlist;
     },
-    addToWishlist(state, book) {
-      state.wishlist.push(book);
+    addToWishlist(state, bookId) {
+      state.wishlist.push(bookId);
     },
     removeFromWishlist(state, bookId) {
-      state.wishlist = state.wishlist.filter(book => book.id !== bookId);
+      state.wishlist = state.wishlist.filter(id => id !== bookId);
     }
   },
   actions: {
@@ -85,7 +85,6 @@ export default createStore({
       try {
         await signOut(auth);
         commit('setUser', null);
-        commit('setWishlist', []); // Clear wishlist on logout
         sessionStorage.removeItem('vuex-state'); // Clear Vuex state from session storage
         return true;
       } catch (error) {
@@ -103,7 +102,6 @@ export default createStore({
       }
     },
     async createBook({ commit }, book) {
-      console.log(book);
       const bookdata = {
         author: book.author,
         genre: book.genre,
@@ -140,25 +138,29 @@ export default createStore({
     async fetchWishlist({ commit, state }) {
       try {
         const querySnapshot = await getDocs(collection(db, `users/${state.user.uid}/wishlist`));
-        const wishlist = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        const wishlist = querySnapshot.docs.map(doc => doc.data().bookId);
         commit('setWishlist', wishlist);
       } catch (error) {
         console.error('Failed to fetch wishlist:', error);
       }
     },
-    async addToWishlist({ commit, state }, book) {
+    async addToWishlist({ commit, state }, bookId) {
       try {
-        const docRef = await addDoc(collection(db, `users/${state.user.uid}/wishlist`), book);
-        commit('addToWishlist', { id: docRef.id, ...book });
+        await addDoc(collection(db, `users/${state.user.uid}/wishlist`), { bookId });
+        commit('addToWishlist', bookId);
       } catch (error) {
         console.error('Failed to add to wishlist:', error);
       }
     },
     async removeFromWishlist({ commit, state }, bookId) {
       try {
-        await deleteDoc(doc(db, `users/${state.user.uid}/wishlist`, bookId));
-        commit('removeFromWishlist', bookId);
-        await this.dispatch('fetchWishlist'); // Refresh wishlist from the database
+        const querySnapshot = await getDocs(collection(db, `users/${state.user.uid}/wishlist`));
+        querySnapshot.forEach(async (doc) => {
+          if (doc.data().bookId === bookId) {
+            await deleteDoc(doc.ref);
+            commit('removeFromWishlist', bookId);
+          }
+        });
       } catch (error) {
         console.error('Failed to remove from wishlist:', error);
       }
