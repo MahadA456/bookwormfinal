@@ -23,8 +23,8 @@
 
 <script>
 export default {
-  name: 'HomePage',
-};
+  name: 'HomePage'
+}
 </script>
 
 <style scoped>
@@ -44,16 +44,30 @@ export default {
 }
 
 .highlight {
-  color: #FFD700;
+  color: #ffd700;
   animation: text-glow 1.5s ease-in-out infinite alternate;
 }
 
 @keyframes text-glow {
   from {
-    text-shadow: 0 0 10px #FFD700, 0 0 20px #FFD700, 0 0 30px #FFD700, 0 0 40px #FFD700, 0 0 50px #FFD700, 0 0 60px #FFD700, 0 0 70px #FFD700;
+    text-shadow:
+      0 0 10px #ffd700,
+      0 0 20px #ffd700,
+      0 0 30px #ffd700,
+      0 0 40px #ffd700,
+      0 0 50px #ffd700,
+      0 0 60px #ffd700,
+      0 0 70px #ffd700;
   }
   to {
-    text-shadow: 0 0 20px #FFD700, 0 0 30px #FFD700, 0 0 40px #FFD700, 0 0 50px #FFD700, 0 0 60px #FFD700, 0 0 70px #FFD700, 0 0 80px #FFD700;
+    text-shadow:
+      0 0 20px #ffd700,
+      0 0 30px #ffd700,
+      0 0 40px #ffd700,
+      0 0 50px #ffd700,
+      0 0 60px #ffd700,
+      0 0 70px #ffd700,
+      0 0 80px #ffd700;
   }
 }
 
@@ -62,7 +76,9 @@ export default {
   border-radius: 0.375rem;
   text-align: center;
   width: auto;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
   display: flex;
   align-items: center;
 }

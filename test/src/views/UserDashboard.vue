@@ -3,11 +3,36 @@
     <!-- Sidebar -->
     <div :class="['w-64 shadow-lg p-6 sidebar-bg', { 'dark-mode-sidebar': isDarkMode }]">
       <div class="flex items-center justify-center mb-6">
-        <img src="@/assets/newlogo.jpg" alt="Logo" class="w-24 h-24 rounded-full border-black border">
+        <img
+          src="@/assets/newlogo.jpg"
+          alt="Logo"
+          class="w-24 h-24 rounded-full border-black border"
+        />
       </div>
-      <h2 :class="['text-center text-lg font-semibold mb-4', { 'text-white': !isDarkMode, 'text-gray-200': isDarkMode }]">Book Worm</h2>
-      <p :class="['text-center text-sm mb-6 tagline', { 'text-gray-200': !isDarkMode, 'text-gray-400': isDarkMode }]">Get Lost In a Good Book</p>
-      <h3 :class="['text-lg font-semibold mb-4', { 'text-white': !isDarkMode, 'text-gray-200': isDarkMode }]">Genres</h3>
+      <h2
+        :class="[
+          'text-center text-lg font-semibold mb-4',
+          { 'text-white': !isDarkMode, 'text-gray-200': isDarkMode }
+        ]"
+      >
+        Book Worm
+      </h2>
+      <p
+        :class="[
+          'text-center text-sm mb-6 tagline',
+          { 'text-gray-200': !isDarkMode, 'text-gray-400': isDarkMode }
+        ]"
+      >
+        Get Lost In a Good Book
+      </p>
+      <h3
+        :class="[
+          'text-lg font-semibold mb-4',
+          { 'text-white': !isDarkMode, 'text-gray-200': isDarkMode }
+        ]"
+      >
+        Genres
+      </h3>
       <ul>
         <li class="mb-2">
           <button @click="showAllBooks" class="transparent-btn">All Books</button>
@@ -29,7 +54,21 @@
           <button @click="navigateToChatBot" class="btn transparent-btn">BookWorm Chat Bot</button>
         </div>
         <div class="w-full flex justify-center">
-          <input type="text" v-model="searchQuery" @input="searchByAuthor" placeholder="Search by Author" :class="['w-1/2 px-4 py-2 border rounded-lg shadow-sm', { 'border-gray-300': !isDarkMode, 'border-gray-600': isDarkMode, 'focus:ring-indigo-500 focus:border-indigo-500': !isDarkMode, 'focus:ring-indigo-400 focus:border-indigo-400': isDarkMode }]">
+          <input
+            type="text"
+            v-model="searchQuery"
+            @input="searchByAuthor"
+            placeholder="Search by Author"
+            :class="[
+              'w-1/2 px-4 py-2 border rounded-lg shadow-sm',
+              {
+                'border-gray-300': !isDarkMode,
+                'border-gray-600': isDarkMode,
+                'focus:ring-indigo-500 focus:border-indigo-500': !isDarkMode,
+                'focus:ring-indigo-400 focus:border-indigo-400': isDarkMode
+              }
+            ]"
+          />
         </div>
         <div class="flex items-center space-x-2">
           <button @click="toggleDarkMode" class="btn transparent-btn">Toggle Dark Mode</button>
@@ -40,16 +79,45 @@
       <!-- Books List -->
       <div v-if="!showingWishlist && filteredBooks.length > 0" class="flex justify-center">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div v-for="book in filteredBooks" :key="book.id" :class="['bg-white p-4 rounded-lg shadow-lg', { 'dark-mode-book': isDarkMode }]">
-            <img :src="book.imgURL" alt="Book Image" class="h-32 w-full object-cover mb-4 rounded-lg cursor-pointer" @click="showImageModal(book.imgURL)">
-            <h3 :class="['text-lg font-semibold', { 'text-gray-800': !isDarkMode, 'text-gray-200': isDarkMode }]">{{ book.title }}</h3>
-            <p :class="['text-gray-600', { 'text-gray-400': isDarkMode }]">Author: {{ book.author }}</p>
-            <p :class="['text-gray-600', { 'text-gray-400': isDarkMode }]">Year: {{ book.year }}</p>
-            <p :class="['text-gray-600', { 'text-gray-400': isDarkMode }]">Genre: {{ book.genre }}</p>
-            <p v-if="book.bookURL" :class="['text-gray-600', { 'text-gray-400': isDarkMode }]">
-              <a :href="book.bookURL" target="_blank" class="underline text-blue-600 dark:text-blue-400">Read More</a>
+          <div
+            v-for="book in filteredBooks"
+            :key="book.id"
+            :class="['bg-white p-4 rounded-lg shadow-lg', { 'dark-mode-book': isDarkMode }]"
+          >
+            <img
+              :src="book.imgURL"
+              alt="Book Image"
+              class="h-32 w-full object-cover mb-4 rounded-lg cursor-pointer"
+              @click="showImageModal(book.imgURL)"
+            />
+            <h3
+              :class="[
+                'text-lg font-semibold',
+                { 'text-gray-800': !isDarkMode, 'text-gray-200': isDarkMode }
+              ]"
+            >
+              {{ book.title }}
+            </h3>
+            <p :class="['text-gray-600', { 'text-gray-400': isDarkMode }]">
+              Author: {{ book.author }}
             </p>
-            <button @click="addToWishlist(book.id)" class="heart-button" :class="{ 'active': isBookInWishlist(book.id) }">
+            <p :class="['text-gray-600', { 'text-gray-400': isDarkMode }]">Year: {{ book.year }}</p>
+            <p :class="['text-gray-600', { 'text-gray-400': isDarkMode }]">
+              Genre: {{ book.genre }}
+            </p>
+            <p v-if="book.bookURL" :class="['text-gray-600', { 'text-gray-400': isDarkMode }]">
+              <a
+                :href="book.bookURL"
+                target="_blank"
+                class="underline text-blue-600 dark:text-blue-400"
+                >Read More</a
+              >
+            </p>
+            <button
+              @click="addToWishlist(book.id)"
+              class="heart-button"
+              :class="{ active: isBookInWishlist(book.id) }"
+            >
               ♥
             </button>
           </div>
@@ -59,14 +127,39 @@
       <!-- Wishlist -->
       <div v-if="showingWishlist && wishlistBooks.length > 0" class="flex justify-center">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div v-for="book in wishlistBooks" :key="book.id" :class="['bg-white p-4 rounded-lg shadow-lg', { 'dark-mode-book': isDarkMode }]">
-            <img :src="book.imgURL" alt="Book Image" class="h-32 w-full object-cover mb-4 rounded-lg cursor-pointer" @click="showImageModal(book.imgURL)">
-            <h3 :class="['text-lg font-semibold', { 'text-gray-800': !isDarkMode, 'text-gray-200': isDarkMode }]">{{ book.title }}</h3>
-            <p :class="['text-gray-600', { 'text-gray-400': isDarkMode }]">Author: {{ book.author }}</p>
+          <div
+            v-for="book in wishlistBooks"
+            :key="book.id"
+            :class="['bg-white p-4 rounded-lg shadow-lg', { 'dark-mode-book': isDarkMode }]"
+          >
+            <img
+              :src="book.imgURL"
+              alt="Book Image"
+              class="h-32 w-full object-cover mb-4 rounded-lg cursor-pointer"
+              @click="showImageModal(book.imgURL)"
+            />
+            <h3
+              :class="[
+                'text-lg font-semibold',
+                { 'text-gray-800': !isDarkMode, 'text-gray-200': isDarkMode }
+              ]"
+            >
+              {{ book.title }}
+            </h3>
+            <p :class="['text-gray-600', { 'text-gray-400': isDarkMode }]">
+              Author: {{ book.author }}
+            </p>
             <p :class="['text-gray-600', { 'text-gray-400': isDarkMode }]">Year: {{ book.year }}</p>
-            <p :class="['text-gray-600', { 'text-gray-400': isDarkMode }]">Genre: {{ book.genre }}</p>
+            <p :class="['text-gray-600', { 'text-gray-400': isDarkMode }]">
+              Genre: {{ book.genre }}
+            </p>
             <p v-if="book.bookURL" :class="['text-gray-600', { 'text-gray-400': isDarkMode }]">
-              <a :href="book.bookURL" target="_blank" class="underline text-blue-600 dark:text-blue-400">Read More</a>
+              <a
+                :href="book.bookURL"
+                target="_blank"
+                class="underline text-blue-600 dark:text-blue-400"
+                >Read More</a
+              >
             </p>
             <button @click="confirmRemoveFromWishlist(book.id)" class="heart-button active">
               ♥
@@ -76,10 +169,26 @@
       </div>
 
       <!-- Image Modal -->
-      <div v-if="showImageModalFlag" class="fixed inset-0 z-50 flex items-center justify-center bg-smoke-light">
-        <div :class="['p-4 rounded-lg shadow-lg max-w-3xl w-full relative', { 'bg-white': !isDarkMode, 'bg-gray-800': isDarkMode }]">
-          <button @click="closeImageModal" :class="['absolute top-2 right-2 p-1 rounded-full', { 'bg-red-500 text-white': !isDarkMode, 'bg-red-400 text-gray-200': isDarkMode }]">&times;</button>
-          <img :src="currentImage" alt="Book Image" class="w-full h-auto object-cover rounded-lg">
+      <div
+        v-if="showImageModalFlag"
+        class="fixed inset-0 z-50 flex items-center justify-center bg-smoke-light"
+      >
+        <div
+          :class="[
+            'p-4 rounded-lg shadow-lg max-w-3xl w-full relative',
+            { 'bg-white': !isDarkMode, 'bg-gray-800': isDarkMode }
+          ]"
+        >
+          <button
+            @click="closeImageModal"
+            :class="[
+              'absolute top-2 right-2 p-1 rounded-full',
+              { 'bg-red-500 text-white': !isDarkMode, 'bg-red-400 text-gray-200': isDarkMode }
+            ]"
+          >
+            &times;
+          </button>
+          <img :src="currentImage" alt="Book Image" class="w-full h-auto object-cover rounded-lg" />
         </div>
       </div>
     </div>
@@ -87,58 +196,62 @@
 </template>
 
 <script>
-import { ref, computed } from 'vue';
-import { useRouter } from 'vue-router';
-import { useStore } from 'vuex';
-import Swal from 'sweetalert2';
+import { ref, computed } from 'vue'
+import { useRouter } from 'vue-router'
+import { useStore } from 'vuex'
+import Swal from 'sweetalert2'
 
 export default {
   name: 'UserDashboard',
   setup() {
-    const router = useRouter();
-    const store = useStore();
+    const router = useRouter()
+    const store = useStore()
 
-    const searchQuery = ref('');
-    const showImageModalFlag = ref(false);
-    const currentImage = ref('');
-    const isDarkMode = ref(false);
-    const showingWishlist = ref(false);
+    const searchQuery = ref('')
+    const showImageModalFlag = ref(false)
+    const currentImage = ref('')
+    const isDarkMode = ref(false)
+    const showingWishlist = ref(false)
 
     // Fetch books on startup
-    store.dispatch('fetchBooks');
-    store.dispatch('fetchWishlist');
+    store.dispatch('fetchBooks')
+    store.dispatch('fetchWishlist')
 
-    const books = computed(() => store.getters.allBooks);
-    const genres = computed(() => [...new Set(books.value.map((book) => book.genre))]);
-    const filteredBooks = ref([...books.value]);
-    const wishlist = computed(() => store.getters.wishlist);
-    const wishlistBooks = computed(() => books.value.filter(book => wishlist.value.includes(book.id)));
+    const books = computed(() => store.getters.allBooks)
+    const genres = computed(() => [...new Set(books.value.map((book) => book.genre))])
+    const filteredBooks = ref([...books.value])
+    const wishlist = computed(() => store.getters.wishlist)
+    const wishlistBooks = computed(() =>
+      books.value.filter((book) => wishlist.value.includes(book.id))
+    )
 
     const filterByGenre = (genre) => {
-      showingWishlist.value = false;
-      filteredBooks.value = books.value.filter(book => book.genre === genre);
+      showingWishlist.value = false
+      filteredBooks.value = books.value.filter((book) => book.genre === genre)
       if (filteredBooks.value.length === 0) {
-        Swal.fire('No Books Found', 'Sorry, no books were found for the selected genre.', 'info');
+        Swal.fire('No Books Found', 'Sorry, no books were found for the selected genre.', 'info')
       }
-    };
+    }
 
     const searchByAuthor = () => {
-      showingWishlist.value = false;
-      filteredBooks.value = books.value.filter(book => book?.author?.toLowerCase().includes(searchQuery?.value?.toLowerCase()));
+      showingWishlist.value = false
+      filteredBooks.value = books.value.filter((book) =>
+        book?.author?.toLowerCase().includes(searchQuery?.value?.toLowerCase())
+      )
       if (filteredBooks.value.length === 0 && searchQuery.value.trim() !== '') {
-        Swal.fire('No Books Found', 'Sorry, no books were found for the entered author.', 'info');
+        Swal.fire('No Books Found', 'Sorry, no books were found for the entered author.', 'info')
       }
-    };
+    }
 
     const showAllBooks = () => {
-      showingWishlist.value = false;
-      filteredBooks.value = [...books.value];
-    };
+      showingWishlist.value = false
+      filteredBooks.value = [...books.value]
+    }
 
     const addToWishlist = (bookId) => {
-      store.dispatch('addToWishlist', bookId);
-      Swal.fire('Added', 'Book added to your wishlist!', 'success');
-    };
+      store.dispatch('addToWishlist', bookId)
+      Swal.fire('Added', 'Book added to your wishlist!', 'success')
+    }
 
     const confirmRemoveFromWishlist = (bookId) => {
       Swal.fire({
@@ -150,48 +263,48 @@ export default {
         cancelButtonText: 'No, keep it'
       }).then((result) => {
         if (result.isConfirmed) {
-          removeFromWishlist(bookId);
-          Swal.fire('Removed', 'Book removed from your wishlist!', 'success');
+          removeFromWishlist(bookId)
+          Swal.fire('Removed', 'Book removed from your wishlist!', 'success')
         }
-      });
-    };
+      })
+    }
 
     const removeFromWishlist = async (bookId) => {
-      await store.dispatch('removeFromWishlist', bookId);
-      store.dispatch('fetchWishlist');
-    };
+      await store.dispatch('removeFromWishlist', bookId)
+      store.dispatch('fetchWishlist')
+    }
 
     const showWishlist = () => {
-      showingWishlist.value = true;
-      filteredBooks.value = wishlistBooks.value;
-    };
+      showingWishlist.value = true
+      filteredBooks.value = wishlistBooks.value
+    }
 
     const isBookInWishlist = (bookId) => {
-      return wishlist.value.includes(bookId);
-    };
+      return wishlist.value.includes(bookId)
+    }
 
     const showImageModal = (imageUrl) => {
-      currentImage.value = imageUrl;
-      showImageModalFlag.value = true;
-    };
+      currentImage.value = imageUrl
+      showImageModalFlag.value = true
+    }
 
     const closeImageModal = () => {
-      showImageModalFlag.value = false;
-      currentImage.value = '';
-    };
+      showImageModalFlag.value = false
+      currentImage.value = ''
+    }
 
     const toggleDarkMode = () => {
-      isDarkMode.value = !isDarkMode.value;
-    };
+      isDarkMode.value = !isDarkMode.value
+    }
 
     const logout = () => {
-      store.dispatch('logout');
-      router.push('/login'); // Redirect to login page
-    };
+      store.dispatch('logout')
+      router.push('/login') // Redirect to login page
+    }
 
     const navigateToChatBot = () => {
-      router.push('/chatBot');
-    };
+      router.push('/chatBot')
+    }
 
     return {
       genres,
@@ -214,9 +327,9 @@ export default {
       showWishlist,
       showingWishlist,
       wishlistBooks
-    };
+    }
   }
-};
+}
 </script>
 
 <style scoped>
@@ -261,7 +374,9 @@ export default {
   padding: 10px 20px;
   font-size: 16px;
   cursor: pointer;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
 
 .transparent-btn:hover {

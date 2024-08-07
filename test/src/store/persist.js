@@ -1,17 +1,17 @@
 export default function persistState(debounceTime = 500) {
-  let timeout;
+  let timeout
 
-  return store => {
-    const savedState = sessionStorage.getItem('vuex-state');
+  return (store) => {
+    const savedState = sessionStorage.getItem('vuex-state')
     if (savedState) {
-      store.replaceState(JSON.parse(savedState));
+      store.replaceState(JSON.parse(savedState))
     }
 
     store.subscribe((mutation, state) => {
-      clearTimeout(timeout);
+      clearTimeout(timeout)
       timeout = setTimeout(() => {
-        sessionStorage.setItem('vuex-state', JSON.stringify(state));
-      }, debounceTime);
-    });
-  };
+        sessionStorage.setItem('vuex-state', JSON.stringify(state))
+      }, debounceTime)
+    })
+  }
 }

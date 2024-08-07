@@ -1,10 +1,26 @@
 <template>
   <div :class="['chat-container', 'min-h-screen flex flex-col', { 'dark-mode': isDarkMode }]">
     <!-- Header -->
-    <header :class="['w-full shadow-lg p-6 flex justify-between items-center sidebar-bg', { 'dark-mode-sidebar': isDarkMode }]">
+    <header
+      :class="[
+        'w-full shadow-lg p-6 flex justify-between items-center sidebar-bg',
+        { 'dark-mode-sidebar': isDarkMode }
+      ]"
+    >
       <div class="flex items-center">
-        <img src="@/assets/newlogo.jpg" alt="Logo" class="w-24 h-24 rounded-full border-black border">
-        <h2 :class="['text-center text-lg font-semibold ml-4', { 'text-white': !isDarkMode, 'text-gray-200': isDarkMode }]">Book Worm Chat</h2>
+        <img
+          src="@/assets/newlogo.jpg"
+          alt="Logo"
+          class="w-24 h-24 rounded-full border-black border"
+        />
+        <h2
+          :class="[
+            'text-center text-lg font-semibold ml-4',
+            { 'text-white': !isDarkMode, 'text-gray-200': isDarkMode }
+          ]"
+        >
+          Book Worm Chat
+        </h2>
       </div>
       <div class="flex items-center">
         <select v-model="geminiOptions" class="btn transparent-btn">
@@ -20,14 +36,24 @@
     </header>
 
     <!-- Main Chat Section -->
-    <main :class="['flex-1 w-full p-8 flex flex-col items-center bg-main-content', { 'dark-mode-main': isDarkMode }]">
+    <main
+      :class="[
+        'flex-1 w-full p-8 flex flex-col items-center bg-main-content',
+        { 'dark-mode-main': isDarkMode }
+      ]"
+    >
       <div class="chat-box w-full lg:w-3/4 flex-1">
         <div v-for="(message, index) in messages" :key="index" :class="['message', message.type]">
           <p>{{ message.text }}</p>
         </div>
       </div>
       <div class="input-box w-full lg:w-3/4 flex mt-4">
-        <input v-model="userMessage" @keyup.enter="sendMessage" placeholder="Type a message..." class="flex-1 px-4 py-2 border rounded-lg shadow-sm" />
+        <input
+          v-model="userMessage"
+          @keyup.enter="sendMessage"
+          placeholder="Type a message..."
+          class="flex-1 px-4 py-2 border rounded-lg shadow-sm"
+        />
         <button @click="sendMessage" class="btn btn-blue ml-2">Send</button>
       </div>
     </main>
@@ -35,27 +61,27 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { GoogleGenerativeAI } from '@google/generative-ai'
 
-const API_KEY = 'AIzaSyBnNGVDrqqfNoXbDz4lmOMytqMYoedcTSc'; // Replace with your actual API key
-const genAI = new GoogleGenerativeAI(API_KEY);
+const API_KEY = 'AIzaSyBnNGVDrqqfNoXbDz4lmOMytqMYoedcTSc' // Replace with your actual API key
+const genAI = new GoogleGenerativeAI(API_KEY)
 
-const geminiOptions = ref('text');
-const userMessage = ref('');
-const messages = ref([]);
-const isDarkMode = ref(false);
-const router = useRouter();
+const geminiOptions = ref('text')
+const userMessage = ref('')
+const messages = ref([])
+const isDarkMode = ref(false)
+const router = useRouter()
 
 const sendMessage = async () => {
-  if (userMessage.value.trim() === '') return;
+  if (userMessage.value.trim() === '') return
 
-  const timestamp = new Date().toLocaleString();
-  messages.value.push({ type: 'user', text: userMessage.value, timestamp });
+  const timestamp = new Date().toLocaleString()
+  messages.value.push({ type: 'user', text: userMessage.value, timestamp })
 
   const model = genAI.getGenerativeModel({
-    model: "gemini-1.5-pro",
+    model: 'gemini-1.5-pro',
     systemInstruction: `
       Welcome to Book Worm! How can I assist you today? Here are some things I can help you with:
       View and Filter Books:
@@ -78,8 +104,8 @@ const sendMessage = async () => {
       "Add a new book to the collection."
       "Filter books by the author 'Lewis Carroll'."
       Feel free to ask me anything related to managing your book collection or using the Book Worm dashboard!
-    `,
-  });
+    `
+  })
 
   const chatSession = model.startChat({
     generationConfig: {
@@ -87,34 +113,34 @@ const sendMessage = async () => {
       topP: 0.95,
       topK: 64,
       maxOutputTokens: 8192,
-      responseMimeType: "text/plain",
+      responseMimeType: 'text/plain'
     },
-    history: messages.value.map(msg => ({
+    history: messages.value.map((msg) => ({
       role: msg.type === 'user' ? 'user' : 'model',
-      parts: [{ text: msg.text }],
-    })),
-  });
+      parts: [{ text: msg.text }]
+    }))
+  })
 
-  const result = await chatSession.sendMessage(userMessage.value);
-  const response = await result.response;
-  const text = await response.text();
+  const result = await chatSession.sendMessage(userMessage.value)
+  const response = await result.response
+  const text = await response.text()
 
-  messages.value.push({ type: 'model', text, timestamp: new Date().toLocaleString() });
+  messages.value.push({ type: 'model', text, timestamp: new Date().toLocaleString() })
 
-  userMessage.value = '';
-};
+  userMessage.value = ''
+}
 
 const toggleDarkMode = () => {
-  isDarkMode.value = !isDarkMode.value;
-};
+  isDarkMode.value = !isDarkMode.value
+}
 
 const goToDashboard = () => {
-  router.push('/userdashboard');
-};
+  router.push('/userdashboard')
+}
 
 const logout = () => {
-  router.push('/login');
-};
+  router.push('/login')
+}
 </script>
 
 <style scoped>
@@ -168,7 +194,9 @@ const logout = () => {
   padding: 10px 20px;
   font-size: 16px;
   cursor: pointer;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
 
 .transparent-btn:hover {

@@ -1,12 +1,16 @@
 <template>
   <div :class="['admin-dashboard', 'min-h-screen flex', { 'dark-mode': isDarkMode }]">
     <!-- Sidebar -->
-    <div :class="['w-64 shadow-lg p-6 sidebar-bg', { 'hidden': !sidebarOpen }]">
+    <div :class="['w-64 shadow-lg p-6 sidebar-bg', { hidden: !sidebarOpen }]">
       <div class="flex items-center justify-center mb-6">
-        <img src="@/assets/newlogo.jpg" alt="Logo" class="w-24 h-24 rounded-full border-black border animate-fade-in">
+        <img
+          src="@/assets/newlogo.jpg"
+          alt="Logo"
+          class="w-24 h-24 rounded-full border-black border animate-fade-in"
+        />
       </div>
       <div class="flex items-center space-x-4 animate-slide-in">
-        <img src="@/assets/linkedinavatar.jpg" alt="User Avatar" class="w-12 h-12 rounded-full">
+        <img src="@/assets/linkedinavatar.jpg" alt="User Avatar" class="w-12 h-12 rounded-full" />
         <div>
           <h2 class="text-lg font-semibold text-white">Book Worm Administration</h2>
           <p class="text-sm text-gray-200">Admin</p>
@@ -47,32 +51,116 @@
       </div>
 
       <!-- Books Table -->
-      <div class="table-container overflow-x-auto shadow-md rounded-lg animate-zoom-in" :class="{ 'dark-mode-table': isDarkMode }">
+      <div
+        class="table-container overflow-x-auto shadow-md rounded-lg animate-zoom-in"
+        :class="{ 'dark-mode-table': isDarkMode }"
+      >
         <table class="min-w-full divide-y divide-gray-200">
           <thead :class="[{ 'bg-gray-50': !isDarkMode, 'bg-gray-700': isDarkMode }]">
             <tr>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">#</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cover</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Book Title</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Year</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Author</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Genre</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Book URL</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+              <th
+                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                #
+              </th>
+              <th
+                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                Cover
+              </th>
+              <th
+                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                Book Title
+              </th>
+              <th
+                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                Year
+              </th>
+              <th
+                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                Author
+              </th>
+              <th
+                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                Genre
+              </th>
+              <th
+                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                Book URL
+              </th>
+              <th
+                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                Actions
+              </th>
             </tr>
           </thead>
-          <tbody :class="[{ 'bg-white': !isDarkMode, 'bg-gray-800': isDarkMode, 'divide-y': true, 'divide-gray-200': true }]">
+          <tbody
+            :class="[
+              {
+                'bg-white': !isDarkMode,
+                'bg-gray-800': isDarkMode,
+                'divide-y': true,
+                'divide-gray-200': true
+              }
+            ]"
+          >
             <tr v-for="(book, index) in filteredBooks" :key="book.id" class="animate-fade-in-up">
               <td class="px-6 py-4 whitespace-nowrap">{{ index + 1 }}</td>
               <td class="px-6 py-4 whitespace-nowrap">
-                <img :src="book.imgURL" alt="Book Image" class="h-16 w-16 object-cover cursor-pointer" @click="showImageModal(book.imgURL)" />
+                <img
+                  :src="book.imgURL"
+                  alt="Book Image"
+                  class="h-16 w-16 object-cover cursor-pointer"
+                  @click="showImageModal(book.imgURL)"
+                />
               </td>
-              <td :class="['px-6 py-4 whitespace-nowrap', { 'dark-mode-text': isDarkMode, 'text-black': !isDarkMode }]">{{ truncateText(book.title, 20) }}</td>
-              <td :class="['px-6 py-4 whitespace-nowrap', { 'dark-mode-text': isDarkMode, 'text-black': !isDarkMode }]">{{ book.year }}</td>
-              <td :class="['px-6 py-4 whitespace-nowrap', { 'dark-mode-text': isDarkMode, 'text-black': !isDarkMode }]">{{ book.author }}</td>
-              <td :class="['px-6 py-4 whitespace-nowrap', { 'dark-mode-text': isDarkMode, 'text-black': !isDarkMode }]">{{ book.genre }}</td>
-              <td :class="['px-6 py-4 whitespace-nowrap', { 'dark-mode-text': isDarkMode, 'text-black': !isDarkMode }]">
-                <a :href="book.bookURL" target="_blank" class="text-blue-500 hover:underline">{{ book.bookURL }}</a>
+              <td
+                :class="[
+                  'px-6 py-4 whitespace-nowrap',
+                  { 'dark-mode-text': isDarkMode, 'text-black': !isDarkMode }
+                ]"
+              >
+                {{ truncateText(book.title, 20) }}
+              </td>
+              <td
+                :class="[
+                  'px-6 py-4 whitespace-nowrap',
+                  { 'dark-mode-text': isDarkMode, 'text-black': !isDarkMode }
+                ]"
+              >
+                {{ book.year }}
+              </td>
+              <td
+                :class="[
+                  'px-6 py-4 whitespace-nowrap',
+                  { 'dark-mode-text': isDarkMode, 'text-black': !isDarkMode }
+                ]"
+              >
+                {{ book.author }}
+              </td>
+              <td
+                :class="[
+                  'px-6 py-4 whitespace-nowrap',
+                  { 'dark-mode-text': isDarkMode, 'text-black': !isDarkMode }
+                ]"
+              >
+                {{ book.genre }}
+              </td>
+              <td
+                :class="[
+                  'px-6 py-4 whitespace-nowrap',
+                  { 'dark-mode-text': isDarkMode, 'text-black': !isDarkMode }
+                ]"
+              >
+                <a :href="book.bookURL" target="_blank" class="text-blue-500 hover:underline">{{
+                  book.bookURL
+                }}</a>
               </td>
               <td class="px-6 py-4 whitespace-nowrap actions">
                 <button @click="editBook(book)" class="btn btn-blue">Edit</button>
@@ -84,34 +172,65 @@
       </div>
 
       <!-- Add Book Modal -->
-      <div class="fixed inset-0 z-50 flex items-center justify-center bg-smoke-light animate-fade-in" v-if="showAddBookModal">
+      <div
+        class="fixed inset-0 z-50 flex items-center justify-center bg-smoke-light animate-fade-in"
+        v-if="showAddBookModal"
+      >
         <div class="bg-white w-full max-w-md p-8 rounded-lg shadow-lg">
           <h3 class="text-xl font-bold mb-4 text-indigo-700">Add New Book</h3>
           <form @submit.prevent="createBook">
             <input type="file" @change="onFileChange" />
             <div class="mb-4">
               <label for="title" class="block text-sm font-medium text-gray-700">Title</label>
-              <input type="text" id="title" v-model="newBook.title" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+              <input
+                type="text"
+                id="title"
+                v-model="newBook.title"
+                required
+                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              />
             </div>
             <div class="mb-4">
               <label for="author" class="block text-sm font-medium text-gray-700">Author</label>
-              <input type="text" id="author" v-model="newBook.author" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+              <input
+                type="text"
+                id="author"
+                v-model="newBook.author"
+                required
+                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              />
             </div>
             <div class="mb-4">
               <label for="year" class="block text-sm font-medium text-gray-700">Year</label>
-              <select id="year" v-model="newBook.year" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+              <select
+                id="year"
+                v-model="newBook.year"
+                required
+                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              >
                 <option v-for="year in years" :key="year" :value="year">{{ year }}</option>
               </select>
             </div>
             <div class="mb-4">
               <label for="genre" class="block text-sm font-medium text-gray-700">Genre</label>
-              <select id="genre" v-model="newBook.genre" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+              <select
+                id="genre"
+                v-model="newBook.genre"
+                required
+                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              >
                 <option v-for="genre in genres" :key="genre" :value="genre">{{ genre }}</option>
               </select>
             </div>
             <div class="mb-4">
               <label for="bookURL" class="block text-sm font-medium text-gray-700">Book URL</label>
-              <input type="url" id="bookURL" v-model="newBook.bookURL" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+              <input
+                type="url"
+                id="bookURL"
+                v-model="newBook.bookURL"
+                required
+                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              />
             </div>
             <button type="submit" class="btn btn-blue">Add Book</button>
           </form>
@@ -120,33 +239,66 @@
       </div>
 
       <!-- Edit Book Modal -->
-      <div class="fixed inset-0 z-50 flex items-center justify-center bg-smoke-light animate-fade-in" v-if="editBookData.id">
+      <div
+        class="fixed inset-0 z-50 flex items-center justify-center bg-smoke-light animate-fade-in"
+        v-if="editBookData.id"
+      >
         <div class="bg-white w-full max-w-md p-8 rounded-lg shadow-lg">
           <h3 class="text-xl font-bold mb-4 text-indigo-700">Edit Book</h3>
           <form @submit.prevent="updateBook">
             <div class="mb-4">
               <label for="editTitle" class="block text-sm font-medium text-gray-700">Title</label>
-              <input type="text" id="editTitle" v-model="editBookData.title" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+              <input
+                type="text"
+                id="editTitle"
+                v-model="editBookData.title"
+                required
+                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              />
             </div>
             <div class="mb-4">
               <label for="editAuthor" class="block text-sm font-medium text-gray-700">Author</label>
-              <input type="text" id="editAuthor" v-model="editBookData.author" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+              <input
+                type="text"
+                id="editAuthor"
+                v-model="editBookData.author"
+                required
+                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              />
             </div>
             <div class="mb-4">
               <label for="editYear" class="block text-sm font-medium text-gray-700">Year</label>
-              <select id="editYear" v-model="editBookData.year" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+              <select
+                id="editYear"
+                v-model="editBookData.year"
+                required
+                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              >
                 <option v-for="year in years" :key="year" :value="year">{{ year }}</option>
               </select>
             </div>
             <div class="mb-4">
               <label for="editGenre" class="block text-sm font-medium text-gray-700">Genre</label>
-              <select id="editGenre" v-model="editBookData.genre" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+              <select
+                id="editGenre"
+                v-model="editBookData.genre"
+                required
+                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              >
                 <option v-for="genre in genres" :key="genre" :value="genre">{{ genre }}</option>
               </select>
             </div>
             <div class="mb-4">
-              <label for="editBookURL" class="block text-sm font-medium text-gray-700">Book URL</label>
-              <input type="url" id="editBookURL" v-model="editBookData.bookURL" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+              <label for="editBookURL" class="block text-sm font-medium text-gray-700"
+                >Book URL</label
+              >
+              <input
+                type="url"
+                id="editBookURL"
+                v-model="editBookData.bookURL"
+                required
+                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              />
             </div>
             <button type="submit" class="btn btn-blue">Update Book</button>
           </form>
@@ -155,10 +307,18 @@
       </div>
 
       <!-- Image Modal -->
-      <div class="fixed inset-0 z-50 flex items-center justify-center bg-smoke-light animate-fade-in" v-if="showImageModalFlag">
+      <div
+        class="fixed inset-0 z-50 flex items-center justify-center bg-smoke-light animate-fade-in"
+        v-if="showImageModalFlag"
+      >
         <div class="bg-white p-4 rounded-lg shadow-lg max-w-3xl w-full relative">
-          <button @click="closeImageModal" class="absolute top-2 right-2 bg-red-500 text-white p-1 rounded-full">&times;</button>
-          <img :src="currentImage" alt="Book Image" class="w-full h-auto object-cover rounded-lg">
+          <button
+            @click="closeImageModal"
+            class="absolute top-2 right-2 bg-red-500 text-white p-1 rounded-full"
+          >
+            &times;
+          </button>
+          <img :src="currentImage" alt="Book Image" class="w-full h-auto object-cover rounded-lg" />
         </div>
       </div>
     </div>
@@ -166,22 +326,22 @@
 </template>
 
 <script>
-import { ref, computed } from 'vue';
-import { useRouter } from 'vue-router';
-import { useStore } from 'vuex';
-import Swal from 'sweetalert2';
-import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { ref, computed } from 'vue'
+import { useRouter } from 'vue-router'
+import { useStore } from 'vuex'
+import Swal from 'sweetalert2'
+import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage'
 
 export default {
   name: 'AdminDashboard',
   setup() {
-    const router = useRouter();
-    const store = useStore();
-    const storage = getStorage(); // Initialize Firebase storage
+    const router = useRouter()
+    const store = useStore()
+    const storage = getStorage() // Initialize Firebase storage
 
-    const sidebarOpen = ref(true); // Sidebar state
-    const isDarkMode = ref(false); // Dark mode state
-    const showGenreButtons = ref(false); // Genre button state
+    const sidebarOpen = ref(true) // Sidebar state
+    const isDarkMode = ref(false) // Dark mode state
+    const showGenreButtons = ref(false) // Genre button state
 
     const newBook = ref({
       title: '',
@@ -190,7 +350,7 @@ export default {
       genre: '',
       bookURL: '', // Add bookURL to newBook object
       imgFile: null // Add imgFile to store the file object
-    });
+    })
     const editBookData = ref({
       id: '',
       title: '',
@@ -198,90 +358,103 @@ export default {
       year: '',
       genre: '',
       bookURL: '' // Add bookURL to editBookData object
-    });
-    const showAddBookModal = ref(false);
-    const showImageModalFlag = ref(false);
-    const currentImage = ref('');
+    })
+    const showAddBookModal = ref(false)
+    const showImageModalFlag = ref(false)
+    const currentImage = ref('')
 
     // Fetch books on startup
-    store.dispatch('fetchBooks');
+    store.dispatch('fetchBooks')
 
-    const books = computed(() => store.getters.allBooks);
-    const filteredBooks = ref([...books.value]);
+    const books = computed(() => store.getters.allBooks)
+    const filteredBooks = ref([...books.value])
 
     const createBook = async () => {
-      if (newBook.value.title && newBook.value.author && newBook.value.year && newBook.value.genre && newBook.value.imgFile && newBook.value.bookURL) {
+      if (
+        newBook.value.title &&
+        newBook.value.author &&
+        newBook.value.year &&
+        newBook.value.genre &&
+        newBook.value.imgFile &&
+        newBook.value.bookURL
+      ) {
         try {
           // Upload image to Firebase Storage
-          const imageRef = storageRef(storage, `images/${newBook.value.imgFile.name}`);
-          await uploadBytes(imageRef, newBook.value.imgFile);
-          const imageUrl = await getDownloadURL(imageRef);
+          const imageRef = storageRef(storage, `images/${newBook.value.imgFile.name}`)
+          await uploadBytes(imageRef, newBook.value.imgFile)
+          const imageUrl = await getDownloadURL(imageRef)
 
           // Add book with image URL to the store
-          const bookData = { ...newBook.value, imgURL: imageUrl, imgFile: undefined }; // Do not include imgFile in Firestore
-          await store.dispatch('createBook', bookData);
+          const bookData = { ...newBook.value, imgURL: imageUrl, imgFile: undefined } // Do not include imgFile in Firestore
+          await store.dispatch('createBook', bookData)
 
-          Swal.fire('Success', 'Book added successfully', 'success');
-          newBook.value = { title: '', author: '', year: '', genre: '', bookURL: '', imgFile: null };
-          showAddBookModal.value = false;
+          Swal.fire('Success', 'Book added successfully', 'success')
+          newBook.value = { title: '', author: '', year: '', genre: '', bookURL: '', imgFile: null }
+          showAddBookModal.value = false
         } catch (error) {
-          Swal.fire('Error', 'Failed to add book', 'error');
-          console.error('Error adding book:', error);
+          Swal.fire('Error', 'Failed to add book', 'error')
+          console.error('Error adding book:', error)
         }
       } else {
-        Swal.fire('Error', 'Please fill all fields and select an image', 'error');
+        Swal.fire('Error', 'Please fill all fields and select an image', 'error')
       }
-    };
+    }
 
     const editBook = (book) => {
-      editBookData.value = { ...book };
-    };
+      editBookData.value = { ...book }
+    }
 
     const updateBook = async () => {
-      if (editBookData.value.title && editBookData.value.author && editBookData.value.year && editBookData.value.genre && editBookData.value.bookURL) {
-        await store.dispatch('updateBook', editBookData.value);
-        editBookData.value = { id: '', title: '', author: '', year: '', genre: '', bookURL: '' };
-        Swal.fire('Success', 'Book updated successfully', 'success');
+      if (
+        editBookData.value.title &&
+        editBookData.value.author &&
+        editBookData.value.year &&
+        editBookData.value.genre &&
+        editBookData.value.bookURL
+      ) {
+        await store.dispatch('updateBook', editBookData.value)
+        editBookData.value = { id: '', title: '', author: '', year: '', genre: '', bookURL: '' }
+        Swal.fire('Success', 'Book updated successfully', 'success')
       } else {
-        Swal.fire('Error', 'Please fill all fields', 'error');
+        Swal.fire('Error', 'Please fill all fields', 'error')
       }
-    };
+    }
 
     const deleteBook = async (bookId) => {
-      await store.dispatch('deleteBook', bookId);
-      Swal.fire('Deleted', 'Book deleted successfully', 'success');
-    };
+      await store.dispatch('deleteBook', bookId)
+      Swal.fire('Deleted', 'Book deleted successfully', 'success')
+    }
 
     const showImageModal = (imageUrl) => {
-      currentImage.value = imageUrl;
-      showImageModalFlag.value = true;
-    };
+      currentImage.value = imageUrl
+      showImageModalFlag.value = true
+    }
 
     const closeImageModal = () => {
-      showImageModalFlag.value = false;
-      currentImage.value = '';
-    };
+      showImageModalFlag.value = false
+      currentImage.value = ''
+    }
 
     const toggleDarkMode = () => {
-      isDarkMode.value = !isDarkMode.value;
-    };
+      isDarkMode.value = !isDarkMode.value
+    }
 
     const toggleGenreButtons = () => {
-      showGenreButtons.value = !showGenreButtons.value;
-    };
+      showGenreButtons.value = !showGenreButtons.value
+    }
 
     const filterByGenre = (genre) => {
-      filteredBooks.value = books.value.filter(book => book.genre === genre);
-    };
+      filteredBooks.value = books.value.filter((book) => book.genre === genre)
+    }
 
     const logout = () => {
-      store.dispatch('logout');
-      router.push('/login'); // Redirect to login page
-    };
+      store.dispatch('logout')
+      router.push('/login') // Redirect to login page
+    }
 
     const truncateText = (text, maxLength) => {
-      return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
-    };
+      return text.length > maxLength ? text.substring(0, maxLength) + '...' : text
+    }
 
     return {
       sidebarOpen,
@@ -307,17 +480,17 @@ export default {
       toggleGenreButtons,
       filterByGenre,
       filteredBooks
-    };
+    }
   },
   methods: {
     onFileChange(event) {
-      const file = event.target.files[0];
+      const file = event.target.files[0]
       if (file) {
-        this.newBook.imgFile = file;
+        this.newBook.imgFile = file
       }
     }
   }
-};
+}
 </script>
 
 <style scoped>
@@ -400,7 +573,9 @@ export default {
   padding: 10px 20px;
   font-size: 16px;
   cursor: pointer;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
 
 .transparent-btn:hover {
