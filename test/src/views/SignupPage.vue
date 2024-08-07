@@ -33,12 +33,13 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import Swal from 'sweetalert2';
-import { registerUser } from '../state/services';
+import { useStore } from 'vuex';
 
 export default {
   name: 'SignupPage',
   setup() {
     const router = useRouter();
+    const store = useStore();
     const email = ref('');
     const password = ref('');
     const confirmPassword = ref('');
@@ -54,7 +55,7 @@ export default {
       }
 
       try {
-        await registerUser({ email: email.value, password: password.value });
+        await store.dispatch('registerUser', { email: email.value, password: password.value });
         Swal.fire('Success', 'Signup successful. Please login.', 'success');
         router.push('/login');
       } catch (error) {

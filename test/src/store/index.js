@@ -1,10 +1,9 @@
 import { createStore } from 'vuex';
 import bcrypt from 'bcryptjs';
 import persistState from './persist';
-import { auth } from '../main'; // Import the auth instance
+import { auth, db } from '../main'; // Import the auth and Firestore instances
 import { signOut, signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
-import { collection, getDocs, addDoc, updateDoc, doc, deleteDoc } from 'firebase/firestore';
-import { db } from '../main'; // Import the Firestore instance
+import { collection, getDocs, addDoc, doc, deleteDoc, updateDoc, query, where } from 'firebase/firestore';
 
 const ADMIN_EMAIL = 'admin@example.com'; // Admin email
 const ADMIN_PASSWORD_HASH = bcrypt.hashSync('admin123', 10); // Hashed admin password
@@ -66,19 +65,19 @@ export default createStore({
         }
       }
     },
-    async registerUser({ commit }, { email, password, confirmPassword }) {
-      if (password !== confirmPassword) {
-        console.error('Signup error: Passwords do not match');
-        return false; // Passwords do not match
-      }
-
+    async registerUser({ commit }, { email, password }) {
       try {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-        commit('setUser', { email: userCredential.user.email, uid: userCredential.user.uid });
+        const user = { email: userCredential.user.email, uid: userCredential.user.uid };
+        commit('setUser', user);
+
+        // Store user info in Firestore
+        await addDoc(collection(db, 'users'), user);
+
         return true;
       } catch (error) {
         console.error('Signup error:', error);
-        return false;
+        throw error; // Throw the error to be caught in the component
       }
     },
     async logout({ commit }) {
@@ -137,7 +136,8 @@ export default createStore({
     },
     async fetchWishlist({ commit, state }) {
       try {
-        const querySnapshot = await getDocs(collection(db, `users/${state.user.uid}/wishlist`));
+        const wishlistQuery = query(collection(db, `users/${state.user.uid}/wishlist`));
+        const querySnapshot = await getDocs(wishlistQuery);
         const wishlist = querySnapshot.docs.map(doc => doc.data().bookId);
         commit('setWishlist', wishlist);
       } catch (error) {
@@ -154,13 +154,12 @@ export default createStore({
     },
     async removeFromWishlist({ commit, state }, bookId) {
       try {
-        const querySnapshot = await getDocs(collection(db, `users/${state.user.uid}/wishlist`));
-        querySnapshot.forEach(async (doc) => {
-          if (doc.data().bookId === bookId) {
-            await deleteDoc(doc.ref);
-            commit('removeFromWishlist', bookId);
-          }
+        const wishlistQuery = query(collection(db, `users/${state.user.uid}/wishlist`), where("bookId", "==", bookId));
+        const querySnapshot = await getDocs(wishlistQuery);
+        querySnapshot.forEach(async (docSnapshot) => {
+          await deleteDoc(doc(db, `users/${state.user.uid}/wishlist`, docSnapshot.id));
         });
+        commit('removeFromWishlist', bookId);
       } catch (error) {
         console.error('Failed to remove from wishlist:', error);
       }
