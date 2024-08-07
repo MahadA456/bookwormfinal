@@ -39,9 +39,12 @@
             <p v-if="isCapsLockOn" class="text-red-500 text-sm mt-2">Caps Lock is on</p>
           </div>
           <div class="mb-4">
-            <label for="confirmPassword" class="block text-gray-700 font-medium mb-2"
-              >Confirm Password</label
+            <label
+              for="confirmPassword"
+              class="block text-gray-700 font-medium mb-2"
             >
+              Confirm Password
+            </label>
             <input
               type="password"
               id="confirmPassword"
@@ -61,9 +64,9 @@
           </button>
           <p class="mt-4 text-center text-gray-600">
             Already have an account?
-            <router-link to="/login" class="text-signup-link hover:underline"
-              >Login Here</router-link
-            >
+            <router-link to="/login" class="text-signup-link hover:underline">
+              Login Here
+            </router-link>
           </p>
         </form>
       </div>
@@ -132,25 +135,32 @@ export default {
   background-repeat: no-repeat;
   background-position: center;
 }
+
 .bg-custom {
   background-color: #f2f1eb;
 }
+
 .bg-signup-button {
   background-color: #1a5319;
 }
+
 .bg-signup-button-hover {
   background-color: #144213;
 }
+
 .text-signup-link {
   color: #1a5319;
 }
+
 .tagline {
   font-family: 'Dancing Script', cursive;
   font-size: 1.25rem;
 }
+
 img {
   border: 2px solid black;
 }
+
 @media (max-width: 640px) {
   .signup-page {
     padding: 1rem;

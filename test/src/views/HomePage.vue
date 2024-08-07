@@ -130,14 +130,14 @@ export default {
 .book-animation {
   top: 20%;
   left: 10%;
-  background-image: url('@/assets/book.png'); /* Ensure you have a book.png */
+  background-image: url('@/assets/bookworm.png'); /* Ensure you have a bookworm.png */
   animation: float 6s ease-in-out infinite;
 }
 
 .worm-animation {
   bottom: 20%;
   right: 10%;
-  background-image: url('@/assets/worm.png'); /* Ensure you have a worm.png */
+  background-image: url('@/assets/bookworm.png'); /* Ensure you have a worm.png */
   animation: float 8s ease-in-out infinite;
 }
 

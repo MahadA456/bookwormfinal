@@ -289,9 +289,7 @@
               </select>
             </div>
             <div class="mb-4">
-              <label for="editBookURL" class="block text-sm font-medium text-gray-700"
-                >Book URL</label
-              >
+              <label for="editBookURL" class="block text-sm font-medium text-gray-700">Book URL</label>
               <input
                 type="url"
                 id="editBookURL"
@@ -608,9 +606,10 @@ export default {
   color: #cbd5e0;
 }
 
-.dark-mode .bg-main-content {
-  background-image: url('@/assets/bgimage-dark.jpg'); /* Add a dark mode background image */
-}
+/* Commented out the dark mode background image */
+/* .dark-mode .bg-main-content {
+  background-image: url('@/assets/bgimage-dark.jpg'); 
+} */
 
 .dark-mode .sidebar-bg {
   background: linear-gradient(135deg, #2d3748, #1a202c);
